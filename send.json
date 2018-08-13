@@ -1,0 +1,25 @@
+{
+  "actions": [
+    {
+      "url": "http://localhost:49624/",
+      "arguments": {
+        "url": "http://localhost:49624/",
+        "arguments": {
+          "url": "http://localhost:49624/",
+          "arguments": {
+            "url": "http://localhost:49624/"
+          }
+        }
+      }
+    },
+    {
+      "sleep": 10000
+    },
+    {
+      "url": "http://localhost:49624/",
+      "arguments": {
+        "url": "http://localhost:49624/"
+      }
+    }
+  ]
+}

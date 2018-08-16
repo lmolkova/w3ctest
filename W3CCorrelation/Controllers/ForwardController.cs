@@ -19,7 +19,7 @@ namespace W3CService.Controllers
             this.httpClient = httpclient;
         }
 
-        private async Task<string> CallNextAsync(string url, Data arguments)
+        private async Task<string> CallNextAsync(string url, Data[] arguments)
         {
             if (url != null)
             {
@@ -38,36 +38,36 @@ namespace W3CService.Controllers
 
         // POST api/values
         [HttpPost]
-        public async Task<string> Post([FromBody]Data data)
+        public async Task<string> Post([FromBody]Data[] data)
         {
-            if (data?.actions != null)
+            var result = string.Empty;
+
+            if (data != null)
             {
-                foreach (var action in data.actions)
+                foreach (var argument in data)
                 {
-                    if (action.sleep != null)
+                    if (argument.sleep != null)
                     {
-                        Thread.Sleep(TimeSpan.FromMilliseconds(action.sleep.Value));
+                        result = "slept for " + argument.sleep.Value + " ms";
+                        Thread.Sleep(TimeSpan.FromMilliseconds(argument.sleep.Value));
                     }
 
-                    await CallNextAsync(action.url, action.arguments);
+                    result += await CallNextAsync(argument.url, argument.arguments);
                 }
             }
+            else
+            {
+                result = "done";
+            }
 
-            return await CallNextAsync(data?.url, data?.arguments);
+            return result;
         }
-    }
-
-    public class Action
-    {
-        public int? sleep { get; set; }
-        public string url { get; set; }
-        public Data arguments { get; set; }
     }
 
     public class Data
     {
+        public int? sleep { get; set; }
         public string url { get; set; }
-        public Data arguments { get; set; }
-        public Action[] actions { get; set; }
+        public Data[] arguments { get; set; }
     }
 }
